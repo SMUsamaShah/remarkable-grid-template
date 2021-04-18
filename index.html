@@ -1,0 +1,92 @@
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+</head>
+
+<body>
+  <label for="grid-density">Grid density: </label>
+  <select name="grid-density" id="grid-density"></select><br/>
+  <br/>
+
+  <div>Minor Lines</div>
+  <label for="minor-darkness">darkness: </label>
+  <input type="number" name="minor-darkness" id="minor-darkness" min="0" max="10" value="5" style="width: 50px"/><br />
+
+  <label for="minor-thickness">thickness: </label>
+  <input type="number" name="minor-thickness" id="minor-thickness" min="1" max="10" value="1" step="1" style="width: 50px"/><br />
+  <br/>
+
+  <div>Major Lines</div>
+  <label for="v-major">vertical gap: </label>
+  <input type="number" name="v-major" id="v-major" min="0" value="0" style="width: 50px" /><br />
+
+  <label for="h-major">horizontal gap: </label>
+  <input type="number" name="h-major" id="h-major" min="0" value="0" style="width: 50px"/><br />
+
+  <label for="major-darkness">darkness: </label>
+  <input type="number" name="major-darkness" id="major-darkness" min="0" max="10" value="10" style="width: 50px"/><br />
+
+  <label for="major-thickness">thickness: </label>
+  <input type="number" name="major-thickness" id="major-thickness" min="1" max="10" value="1" step="1" style="width: 50px"/><br />
+
+
+
+  <button onclick="draw()">Draw</button><br />
+  <button onclick="saveCanvasPNG()">Download/Save</button><br />
+  <br />
+  <canvas id="grid-canvas"></canvas>
+  <script src="script.js"></script>
+
+  <script>
+    const canvas = document.getElementById("grid-canvas");
+      // fill density dropdown
+      let densitySelector = document.getElementById("grid-density");
+      for (let i = 1; i < 468 /*GCD of Remarkable dimensions*/; i++) {
+        if (468 % i == 0) {
+          //1, 2, 3, 4, 6, 9, 12, 13, 18, 26, 36, 39, 52, 78, 117, 156, 234, 468
+          const opt = document.createElement("option");
+          opt.value = i;
+          opt.text = i;
+          densitySelector.appendChild(opt);
+
+          if (i == 9) opt.selected = true;
+        }
+      }
+      
+
+      function draw() {
+        let vMajor = parseInt(document.getElementById("v-major").value);
+        let hMajor = parseInt(document.getElementById("h-major").value);
+        let majorDarkness = parseInt(document.getElementById("major-darkness").value);
+        let majorThickness = parseInt(document.getElementById("major-thickness").value);
+        let minorDarkness = parseInt(document.getElementById("minor-darkness").value);
+        let minorThickness = parseInt(document.getElementById("minor-thickness").value);
+
+        let boxscale = densitySelector.value; 
+        createGraph(canvas, {
+          "vLines": (3 * boxscale), 
+          "hLines": (4 * boxscale), 
+          "vMajorInterval": vMajor, 
+          "hMajorInterval": hMajor,
+          "majorDarkness": majorDarkness,
+          "majorThickness": majorThickness,
+          "minorDarkness": minorDarkness,
+          "minorThickness": minorThickness
+        });
+      }
+
+      function saveCanvasPNG(){
+        let gridsize = densitySelector.value;
+        let downloadLink = document.createElement('a');
+        downloadLink.setAttribute('download', `grid-${gridsize}.png`);
+        canvas.toBlob(function(blob) {
+          let url = URL.createObjectURL(blob);
+          downloadLink.setAttribute('href', url);
+          downloadLink.click();
+        });
+      }
+  </script>
+</body>
+
+</html>
