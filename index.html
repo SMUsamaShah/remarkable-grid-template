@@ -8,7 +8,7 @@
 <body>
   <label for="grid-density">Grid density: </label>
   <select name="grid-density" id="grid-density"></select><br/>
-  <div id="cell-count">s</div><br/>
+  <div id="cell-count">s</div>
   <br/>
 
   <div>Minor Lines</div>
@@ -31,18 +31,22 @@
 
   <label for="major-thickness">thickness: </label>
   <input type="number" name="major-thickness" id="major-thickness" min="1" max="10" value="1" step="1" style="width: 50px"/><br />
+  <br />
 
+  <label for="templates-json">Entry for /usr/share/remarkable/templates/templates.json: </label><br/>
+  <textarea name="templates-json" id="templates-json" style="height: 130px; width: 250px"></textarea><br/>
 
 
   <button onclick="draw()">Draw</button><br />
-  <button onclick="saveCanvasPNG()">Download/Save</button><br />
+  <button onclick="saveCanvasPNG()">Download/Save</button> <span>Put image in /usr/share/remarkable/templates/</span><br />
   <br />
   <canvas id="grid-canvas"></canvas>
   <script src="script.js"></script>
 
   <script>
     const canvas = document.getElementById("grid-canvas");
-    
+    let fileName = "empty.png";
+
     // fill density dropdown
     let densitySelector = document.getElementById("grid-density");
     for (let i = 1; i < 468 /*GCD of Remarkable dimensions*/; i++) {
@@ -66,8 +70,6 @@
     showCellCount();
     densitySelector.addEventListener("input", showCellCount);
     densitySelector.addEventListener("input", draw);
-    
-    
 
     function draw() {
       let vMajor = parseInt(document.getElementById("v-major").value);
@@ -76,6 +78,8 @@
       let majorThickness = parseInt(document.getElementById("major-thickness").value);
       let minorDarkness = parseInt(document.getElementById("minor-darkness").value);
       let minorThickness = parseInt(document.getElementById("minor-thickness").value);
+
+      fileName = `Grid ${densitySelector.value*4} ${densitySelector.value*3}`;
 
       let boxscale = densitySelector.value; 
       createGraph(canvas, {
@@ -88,12 +92,21 @@
         "minorDarkness": minorDarkness,
         "minorThickness": minorThickness
       });
+      
+      let templatesJson = document.getElementById("templates-json");
+      templatesJson.value = `    {
+      "name": "${fileName}",
+      "filename": "${fileName}",
+      "iconCode": "\\ue99e",
+      "categories": [
+        "Custom"
+      ]
+    },`;
     }
 
     function saveCanvasPNG(){
       let downloadLink = document.createElement('a');
-      let fileName = `grid-${densitySelector.value*4}-${densitySelector.value*3}.png`;
-      downloadLink.setAttribute('download', fileName);
+      downloadLink.setAttribute('download', `${fileName}.png`);
       canvas.toBlob(function(blob) {
         let url = URL.createObjectURL(blob);
         downloadLink.setAttribute('href', url);
