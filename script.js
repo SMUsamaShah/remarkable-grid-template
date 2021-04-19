@@ -1,7 +1,7 @@
 function createGraph(canvas, options) {
   const rmWidth = 1404;
   const rmHeight = 1872;
-  const TRANSPARENT = "hsla(0,0%,0%,1)";
+  const TRANSPARENT = "hsla(0,0%,100%,1)";
 
   const ctx = canvas.getContext("2d");
   // so that lines are drawn exactly on the pixel to look crisp
