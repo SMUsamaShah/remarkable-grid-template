@@ -40,52 +40,60 @@
 
   <script>
     const canvas = document.getElementById("grid-canvas");
-      // fill density dropdown
-      let densitySelector = document.getElementById("grid-density");
-      for (let i = 1; i < 468 /*GCD of Remarkable dimensions*/; i++) {
-        if (468 % i == 0) {
-          //1, 2, 3, 4, 6, 9, 12, 13, 18, 26, 36, 39, 52, 78, 117, 156, 234, 468
-          const opt = document.createElement("option");
-          opt.value = i;
-          opt.text = i;
-          densitySelector.appendChild(opt);
+    
+    // fill density dropdown
+    let densitySelector = document.getElementById("grid-density");
+    for (let i = 1; i < 468 /*GCD of Remarkable dimensions*/; i++) {
+      if (468 % i == 0) {
+        //1, 2, 3, 4, 6, 9, 12, 13, 18, 26, 36, 39, 52, 78, 117, 156, 234, 468
+        const opt = document.createElement("option");
+        opt.value = i;
+        opt.text = i;
+        densitySelector.appendChild(opt);
 
-          if (i == 9) opt.selected = true;
-        }
+        if (i == 9) opt.selected = true;
       }
-      
+    }
+    
+    for (let element of document.getElementsByTagName("input")) {
+      element.addEventListener("input", draw);
+    }
+    for (let element of document.getElementsByTagName("select")) {
+      element.addEventListener("input", draw);
+    }
+    
 
-      function draw() {
-        let vMajor = parseInt(document.getElementById("v-major").value);
-        let hMajor = parseInt(document.getElementById("h-major").value);
-        let majorDarkness = parseInt(document.getElementById("major-darkness").value);
-        let majorThickness = parseInt(document.getElementById("major-thickness").value);
-        let minorDarkness = parseInt(document.getElementById("minor-darkness").value);
-        let minorThickness = parseInt(document.getElementById("minor-thickness").value);
+    function draw() {
+      let vMajor = parseInt(document.getElementById("v-major").value);
+      let hMajor = parseInt(document.getElementById("h-major").value);
+      let majorDarkness = parseInt(document.getElementById("major-darkness").value);
+      let majorThickness = parseInt(document.getElementById("major-thickness").value);
+      let minorDarkness = parseInt(document.getElementById("minor-darkness").value);
+      let minorThickness = parseInt(document.getElementById("minor-thickness").value);
 
-        let boxscale = densitySelector.value; 
-        createGraph(canvas, {
-          "vLines": (3 * boxscale), 
-          "hLines": (4 * boxscale), 
-          "vMajorInterval": vMajor, 
-          "hMajorInterval": hMajor,
-          "majorDarkness": majorDarkness,
-          "majorThickness": majorThickness,
-          "minorDarkness": minorDarkness,
-          "minorThickness": minorThickness
-        });
-      }
+      let boxscale = densitySelector.value; 
+      createGraph(canvas, {
+        "vLines": (3 * boxscale), 
+        "hLines": (4 * boxscale), 
+        "vMajorInterval": vMajor, 
+        "hMajorInterval": hMajor,
+        "majorDarkness": majorDarkness,
+        "majorThickness": majorThickness,
+        "minorDarkness": minorDarkness,
+        "minorThickness": minorThickness
+      });
+    }
 
-      function saveCanvasPNG(){
-        let gridsize = densitySelector.value;
-        let downloadLink = document.createElement('a');
-        downloadLink.setAttribute('download', `grid-${gridsize}.png`);
-        canvas.toBlob(function(blob) {
-          let url = URL.createObjectURL(blob);
-          downloadLink.setAttribute('href', url);
-          downloadLink.click();
-        });
-      }
+    function saveCanvasPNG(){
+      let downloadLink = document.createElement('a');
+      let fileName = `grid-${densitySelector.value}.png`;
+      downloadLink.setAttribute('download', fileName);
+      canvas.toBlob(function(blob) {
+        let url = URL.createObjectURL(blob);
+        downloadLink.setAttribute('href', url);
+        downloadLink.click();
+      });
+    }
   </script>
 </body>
 
