@@ -8,6 +8,7 @@
 <body>
   <label for="grid-density">Grid density: </label>
   <select name="grid-density" id="grid-density"></select><br/>
+  <div id="cell-count">s</div><br/>
   <br/>
 
   <div>Minor Lines</div>
@@ -59,9 +60,13 @@
     for (let element of document.getElementsByTagName("input")) {
       element.addEventListener("input", draw);
     }
-    for (let element of document.getElementsByTagName("select")) {
-      element.addEventListener("input", draw);
+    showCellCount = () => {
+      document.getElementById("cell-count").innerText = `rows: ${densitySelector.value*4}, columns: ${densitySelector.value*3}`;
     }
+    showCellCount();
+    densitySelector.addEventListener("input", showCellCount);
+    densitySelector.addEventListener("input", draw);
+    
     
 
     function draw() {
@@ -87,7 +92,7 @@
 
     function saveCanvasPNG(){
       let downloadLink = document.createElement('a');
-      let fileName = `grid-${densitySelector.value}.png`;
+      let fileName = `grid-${densitySelector.value*4}-${densitySelector.value*3}.png`;
       downloadLink.setAttribute('download', fileName);
       canvas.toBlob(function(blob) {
         let url = URL.createObjectURL(blob);
