@@ -7,11 +7,14 @@
 
 <body>
   <label for="grid-density">Grid density: </label>
-  <select name="grid-density" id="grid-density"></select><br/>
-  <div id="cell-count">s</div>
+  <select name="grid-density" id="grid-density"></select>
+  <label for="grid-dotted">Dotted: </label>
+  <input type="checkbox" name="grid-dotted" id="grid-dotted" />
+  <br/><span id="cell-count"></span><br/>
+
   <br/>
 
-  <div>Minor Lines</div>
+  <div>Minor</div>
   <label for="minor-darkness">darkness: </label>
   <input type="number" name="minor-darkness" id="minor-darkness" min="0" max="10" value="5" style="width: 50px"/><br />
 
@@ -19,7 +22,7 @@
   <input type="number" name="minor-thickness" id="minor-thickness" min="1" max="10" value="1" step="1" style="width: 50px"/><br />
   <br/>
 
-  <div>Major Lines</div>
+  <div>Major</div>
   <label for="v-major">vertical gap: </label>
   <input type="number" name="v-major" id="v-major" min="0" value="0" style="width: 50px" /><br />
 
@@ -72,12 +75,13 @@
     densitySelector.addEventListener("input", draw);
 
     function draw() {
-      let vMajor = parseInt(document.getElementById("v-major").value);
-      let hMajor = parseInt(document.getElementById("h-major").value);
-      let majorDarkness = parseInt(document.getElementById("major-darkness").value);
-      let majorThickness = parseInt(document.getElementById("major-thickness").value);
-      let minorDarkness = parseInt(document.getElementById("minor-darkness").value);
-      let minorThickness = parseInt(document.getElementById("minor-thickness").value);
+      const vMajor = parseInt(document.getElementById("v-major").value);
+      const hMajor = parseInt(document.getElementById("h-major").value);
+      const majorDarkness = parseInt(document.getElementById("major-darkness").value);
+      const majorThickness = parseInt(document.getElementById("major-thickness").value);
+      const minorDarkness = parseInt(document.getElementById("minor-darkness").value);
+      const minorThickness = parseInt(document.getElementById("minor-thickness").value);
+      const isDotted = document.getElementById("grid-dotted").checked;
 
       fileName = `Grid ${densitySelector.value*4} ${densitySelector.value*3}`;
 
@@ -90,7 +94,8 @@
         "majorDarkness": majorDarkness,
         "majorThickness": majorThickness,
         "minorDarkness": minorDarkness,
-        "minorThickness": minorThickness
+        "minorThickness": minorThickness,
+        "isDotted": isDotted
       });
       
       let templatesJson = document.getElementById("templates-json");

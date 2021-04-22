@@ -1,9 +1,12 @@
 function createGraph(canvas, options) {
   const rmWidth = 1404;
   const rmHeight = 1872;
-  const TRANSPARENT = "hsla(0,0%,100%,1)";
+  const WHITE = "hsla(0,0%,100%,1)";
 
   const ctx = canvas.getContext("2d");
+  // draw background
+  ctx.fillStyle = WHITE;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
   // so that lines are drawn exactly on the pixel to look crisp
   const PIXEL_ADJUST = 0.5;
 
@@ -21,14 +24,15 @@ function createGraph(canvas, options) {
   let majorVisible = true;
   let minorVisible = true;
 
+  if (options.isDotted) {
+    drawDottedGrid();
+  } else {
+    drawGraphLines();
+  }
+
   function drawGraphLines() {
     let colorMajor = `hsla(0,0%,${10 - options.majorDarkness}0%,1)`;
     let colorMinor = `hsla(0,0%,${10 - options.minorDarkness}0%,1)`;
-
-    // draw background
-    ctx.fillStyle = TRANSPARENT;
-
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     function drawLineVertical(x, y, length, color) {
       ctx.beginPath();
@@ -46,6 +50,7 @@ function createGraph(canvas, options) {
       ctx.stroke();
       ctx.closePath();
     }
+
     drawGridLineVertical = (n, color) => {
       drawLineVertical(
         n * xScale + (ctx.lineWidth % 2 == 0 ? 0 : PIXEL_ADJUST),
@@ -86,5 +91,20 @@ function createGraph(canvas, options) {
     }
   }
 
-  drawGraphLines();
+  function drawDottedGrid() {
+    let color = `hsla(0,0%,${10 - options.minorDarkness}0%,1)`;
+    let size = options.minorThickness;
+
+    function drawDot(x, y, size, color) {
+      ctx.fillStyle = color;
+      ctx.fillRect(x, y, size, size);
+    }
+
+    // draw vertical lines
+    for (let i = 1; i <= vLines; i++) {
+      for (let j = 1; j <= hLines; j++) {
+        drawDot(i * xScale, j * yScale, size, color);
+      }
+    }
+  }
 }
