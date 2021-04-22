@@ -6,38 +6,46 @@
 </head>
 
 <body>
-  <label for="grid-density">Grid density: </label>
-  <select name="grid-density" id="grid-density"></select>
-  <label for="grid-dotted">Dotted: </label>
-  <input type="checkbox" name="grid-dotted" id="grid-dotted" />
-  <br/><span id="cell-count"></span><br/>
+  <fieldset>
+    <legend>Grid</legend>
+    <label for="grid-dotted">dotted: </label>
+    <input type="checkbox" name="grid-dotted" id="grid-dotted" /><br/>
+    <label for="grid-density">density: </label>
+    <select name="grid-density" id="grid-density"></select>
 
-  <br/>
+    <br/><span id="cell-count"></span><br/>
 
-  <div>Minor</div>
-  <label for="minor-darkness">darkness: </label>
-  <input type="number" name="minor-darkness" id="minor-darkness" min="0" max="10" value="5" style="width: 50px"/><br />
+    <br/>
 
-  <label for="minor-thickness">thickness: </label>
-  <input type="number" name="minor-thickness" id="minor-thickness" min="1" max="10" value="1" step="1" style="width: 50px"/><br />
-  <br/>
+    <fieldset>
+      <legend>Minor</legend>
+      <label for="minor-darkness">darkness: </label>
+      <input type="number" name="minor-darkness" id="minor-darkness" min="0" max="10" value="5" style="width: 50px"/><br />
 
-  <div>Major</div>
-  <label for="v-major">vertical gap: </label>
-  <input type="number" name="v-major" id="v-major" min="0" value="0" style="width: 50px" /><br />
+      <label for="minor-thickness">thickness: </label>
+      <input type="number" name="minor-thickness" id="minor-thickness" min="1" max="10" value="1" step="1" style="width: 50px"/><br />
+    </fieldset>
+    <br/>
 
-  <label for="h-major">horizontal gap: </label>
-  <input type="number" name="h-major" id="h-major" min="0" value="0" style="width: 50px"/><br />
+    <fieldset>
+      <legend>Major</legend>
+      <label for="v-major">vertical gap: </label>
+      <input type="number" name="v-major" id="v-major" min="0" value="0" style="width: 50px" /><br />
 
-  <label for="major-darkness">darkness: </label>
-  <input type="number" name="major-darkness" id="major-darkness" min="0" max="10" value="10" style="width: 50px"/><br />
+      <label for="h-major">horizontal gap: </label>
+      <input type="number" name="h-major" id="h-major" min="0" value="0" style="width: 50px"/><br />
 
-  <label for="major-thickness">thickness: </label>
-  <input type="number" name="major-thickness" id="major-thickness" min="1" max="10" value="1" step="1" style="width: 50px"/><br />
+      <label for="major-darkness">darkness: </label>
+      <input type="number" name="major-darkness" id="major-darkness" min="0" max="10" value="10" style="width: 50px"/><br />
+
+      <label for="major-thickness">thickness: </label>
+      <input type="number" name="major-thickness" id="major-thickness" min="1" max="10" value="1" step="1" style="width: 50px"/><br />
+    </fieldset>
+  </fieldset>
   <br />
 
   <label for="templates-json">Entry for /usr/share/remarkable/templates/templates.json: </label><br/>
-  <textarea name="templates-json" id="templates-json" style="height: 130px; width: 250px"></textarea><br/>
+  <textarea name="templates-json" id="templates-json" style="height: 130px; width: 250px" readonly></textarea><br/>
 
 
   <button onclick="draw()">Draw</button><br />
@@ -83,7 +91,7 @@
       const minorThickness = parseInt(document.getElementById("minor-thickness").value);
       const isDotted = document.getElementById("grid-dotted").checked;
 
-      fileName = `Grid ${densitySelector.value*4} ${densitySelector.value*3}`;
+      fileName = `${isDotted?"Dotted ":""}Grid ${densitySelector.value*4} ${densitySelector.value*3}`;
 
       let boxscale = densitySelector.value; 
       createGraph(canvas, {

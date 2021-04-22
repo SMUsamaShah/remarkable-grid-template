@@ -101,8 +101,8 @@ function createGraph(canvas, options) {
     }
 
     // draw vertical lines
-    for (let i = 1; i <= vLines; i++) {
-      for (let j = 1; j <= hLines; j++) {
+    for (let i = 0; i <= vLines; i++) {
+      for (let j = 0; j <= hLines; j++) {
         drawDot(i * xScale, j * yScale, size, color);
       }
     }
