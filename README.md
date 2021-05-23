@@ -1,7 +1,5 @@
-# Remarkable Grid Template Generator
+# [Remarkable Grid Template Generator](https://xosh.org/remarkable-grid-template/)
 
-## Link 
 ## https://xosh.org/remarkable-grid-template/
-## https://smusamashah.github.io/remarkable-grid-template/
 
 Made with StackBlitz(♥). Link https://stackblitz.com/edit/remarkable-grid
